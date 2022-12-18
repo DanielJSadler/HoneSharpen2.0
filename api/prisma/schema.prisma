@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator typegraphql {
+  provider = "typegraphql-prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id         String    @id @default(uuid())
+  email      String    @unique
+  firstname  String
+  lastname   String
+  password   String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  Address    Address[]
+}
+
+model Address {
+  id          String   @id @default(uuid())
+  user        Users?   @relation(fields: [user_id], references: [id])
+  user_id     String?
+  firstname   String
+  lastname    String
+  email       String
+  phone       String
+  address_one String
+  address_two String
+  city        String
+  country     String
+  postcode    String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
